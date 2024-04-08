@@ -53,8 +53,8 @@ public class Parser {
     // Method to parse display statement
     public void displayStatement() {
         eat(Token.TokenType.DISPLAY); // Display keyword
+        System.out.println("display eated");
         expression(); // Parse expression
-        eat(Token.TokenType.NEWLINE); // End of statement
     }
 
     // Method to parse expression
