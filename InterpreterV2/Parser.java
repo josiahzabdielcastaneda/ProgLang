@@ -10,8 +10,11 @@ public class Parser {
     public void eat(Token.TokenType tokenType) {
         if (currentToken.type == tokenType) {
             currentToken = tokenizer.getNextToken();
+        } else if (tokenType == Token.TokenType.NEWLINE && currentToken.type == Token.TokenType.END_CODE) {
+            // If END CODE is followed by a newline, move to the next token
+            currentToken = tokenizer.getNextToken();
         } else {
-            throw new RuntimeException("Unexpected token: " + currentToken.type + " " + currentToken.value);
+            throw new RuntimeException("Unexpected token: " + currentToken.type + " " + currentToken.value + " " + tokenType);
         }
     }
 
@@ -26,6 +29,10 @@ public class Parser {
                 break;
             case DISPLAY:
                 displayStatement();
+                break;
+            case END_CODE:
+            case NEWLINE:
+            case EOF:
                 break;
             default:
                 throw new RuntimeException("Invalid statement: " + currentToken.value + " " + currentToken.type);
@@ -83,5 +90,7 @@ public class Parser {
     public void parse() {
         beginCodeBlock(); // Parse the main block
         eat(Token.TokenType.EOF); // Ensure all tokens are consumed
+        System.out.println("no errors");
+        return;
     }
 }
